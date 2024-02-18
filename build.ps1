@@ -2,7 +2,7 @@ echo "Started compilation"
 echo "Please wait..."
 
 # we don't want to compile the source files from the demos/ folder
-g++ src/main.cpp  `
+g++ src/*.cpp     `
 	src/glad.c    `
 	-o bin/prog   `
 	-I include    `
