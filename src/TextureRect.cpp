@@ -1,17 +1,9 @@
 #include "TextureRect.hpp"
-
+#include "ResourceManager.hpp"
 
 TextureRect::TextureRect(SDL_Renderer *renderer, std::string filepath) {
-	
-	SDL_Surface *image = IMG_Load(filepath.c_str());
-	
-	if(!image) {
-		std::cout << "Image wasn't  loaded correctly" << std::endl;
-	}
-	
-	m_texture = SDL_CreateTextureFromSurface(renderer, image);
-	SDL_FreeSurface(image);
-	
+	SDL_Surface *retrieveSurface = ResourceManager::GetInstance().GetSurface("res/f_spritesheet.png");
+	m_texture = SDL_CreateTextureFromSurface(renderer, retrieveSurface);
 }
 
 TextureRect::~TextureRect() {

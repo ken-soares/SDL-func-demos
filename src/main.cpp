@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
+#include <vector>
 
 #define WINDOW_WIDTH 600
 #define WINDOW_HEIGHT 450
@@ -29,9 +31,6 @@ void loadSystems() {
 	}
 }
 
-
-
-
 int main(int argv, char** args) {
 	
 	loadSystems();
@@ -44,8 +43,27 @@ int main(int argv, char** args) {
 												SDL_RENDERER_ACCELERATED);
 	
 	
-	TextureRect spritesheet(renderer, "./res/f_spritesheet.png");
-	spritesheet.SetProperties(100,100,256,256);
+	std::vector<std::shared_ptr<TextureRect>> rects;
+	
+	for(int i = 0; i < 10; i++) {
+		std::shared_ptr<TextureRect> rect = std::make_shared<TextureRect>(renderer, "res/f_spritesheet.png");
+		
+		rects.push_back(rect);
+	}
+	
+	int row = 0;
+	int col = 1;
+	
+	for(int i = 0; i < 10; i++) {
+		rects[i]->SetProperties(100*col, 30*row, 200, 200);
+		if(i % 3 == 0) {
+			row++;
+			col = 1;
+		}
+		
+		col++;
+	}
+	
 	
 	bool gameRunning = true;
 	
@@ -63,7 +81,9 @@ int main(int argv, char** args) {
 		SDL_SetRenderDrawColor(renderer, 0,0,255, SDL_ALPHA_OPAQUE);
 		SDL_RenderClear(renderer);
 
-		spritesheet.Render(renderer);
+		for(auto& rect: rects) {
+			rect->Render(renderer);
+		}
 		
 		SDL_RenderPresent(renderer);
 	}
